@@ -195,12 +195,15 @@ ha1 = semilogy(X.f/fnorm, X.Fda(:,1),amp1);
 ha2 = semilogy(X.f/fnorm, X.Fda(:,2),amp2); 
 fmin = min(X.f) + 2 * filt.fsigma;
 fmax = max(X.f) - 2 * filt.fsigma;
-FdFmin = 0.5 * 10^(floor(log10(min(X.FdF))));
+FdFmin = 0.5 * 10^(floor(log10(min(abs(X.FdF))))) %added absolute value;
 FdFmax = 2;
 
 % plot 1% confidence line
 plot([fmin/fnorm fmax/fnorm], [0.01 0.01],'r');
 
+disp("Axes limits: ")
+disp(FdFmin)
+disp(FdFmax)
 axis([fmin/fnorm fmax/fnorm FdFmin FdFmax]);
 axis([fmin/fnorm fmax/fnorm 0.001 FdFmax]);
 

@@ -3,13 +3,9 @@
 
 % load 9429_xmd.mat
 % load 9429_xmd_17_06_07.mat
-% addpath 'c:\Documents and Settings\vanessa\desktop\SVD\SVD5'
-% addpath /home/hol105/MHD_codes/matlab/svd_scripts
-% addpath /data/Laptop_2009_Windows/SVD/SVD5
 addpath svd_scripts
 
 % last item gets popped to top of stack....
-% addpath /home/hol105/MHD_codes/matlab/svd_scripts
 
 load struc_xmd.mat
 
@@ -17,9 +13,9 @@ load struc_xmd.mat
 dt   = 5.0e-7; % 0.5 mus
 tmax = 0.3;
 
-xmd.omt(1).signal(:,1) = 0:dt:tmax;
-xmd.omt(2).signal(:,1) = 0:dt:tmax;
-xmd.omt(3).signal(:,1) = 0:dt:tmax;
+for i = 1:3
+    xmd.omt(i).signal(:,1) = 0:dt:tmax;
+end
 
 A1 = 5;
 f1 = 50e+3;
@@ -27,13 +23,15 @@ n1 = 10;
 A2 = 1;
 f2 = 100e+3;
 n2 = -10;
-A3 = 1e5;
-f3 = 150e+3;
+A3 = 3;
+f3 = 70e+3;
 n3 = 5;
 
-xmd.omt(1).signal(:,2) = A1 * cos(xmd.omt(1).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(1).phi )  + A2 * cos(xmd.omt(1).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(1).phi ); 
-xmd.omt(2).signal(:,2) = A1 * cos(xmd.omt(2).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(2).phi )  + A2 * cos(xmd.omt(2).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(2).phi ); 
-xmd.omt(3).signal(:,2) = A1 * cos(xmd.omt(3).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(3).phi )  + A2 * cos(xmd.omt(3).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(3).phi ); 
+for i = 1:3
+    xmd.omt(i).signal(:,2) = A1 * cos(xmd.omt(i).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(i).phi )  
+    xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(i).phi );
+    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(xmd.omt(i).signal(:,1).^2 * 2* pi *f3 + n3 * xmd.omt(i).phi );
+end
 
 % add noise to signal components
 Nt   = size(xmd.omt(1).signal,1)
@@ -51,7 +49,7 @@ B = [0.049922035 -0.095993537 0.050612699 -0.004408786];
 A = [1 -2.494956002   2.017265875  -0.522189400];
 nT60 = round(log(1000)/(1-max(abs(roots(A))))); % T60 est.
 
-beta = 0.05; %Breaks for beta = 0.01 and below
+beta = 0.1;
 for i=1:3
     v = randn(1,Nx+nT60); % Gaussian white noise: N(0,1)
     x = filter(B,A,v);    % Apply 1/F roll-off to PSD
@@ -91,7 +89,7 @@ pltn_M1data(Z1, Z1_noise); %Figure 4
 % pltn_chirp(Z1);
 
 % M=2 mode
-[Z2]    = nmode(XMD.omt,0.165,2,500,100e+3)
+[Z2]    = nmode(XMD.omt,0.165,2,500,100e+3) %changed number of modes
 Z2      = nmode_filter(Z2);
 
 Z2.shot = 9429
