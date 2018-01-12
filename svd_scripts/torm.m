@@ -9,6 +9,7 @@ for i=1:Nitem
   if X(i).data
     tm=min(find(X(i).t>=tslice));
     fm=min(find(X(i).f>=fslice));
+    %disp(abs(X(i).F(fm, :)))
     F(k)    =X(i).F(fm,tm);
     angle(k)=X(i).phi;
     Nc      =X(i).Nc;

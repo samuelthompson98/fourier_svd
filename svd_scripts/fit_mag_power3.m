@@ -37,10 +37,10 @@ end
 figs =1;
 if figs  
     figure; hold on;
-    loglog(n_struc.f, abs(n_struc.a(:,1)),'k-');
-    loglog(n_struc.f, abs(n_struc.a_fit(:,1)),'r-');
-    loglog(n_struc.f, snr_confidence * abs(n_struc.a_fit(:,1)),'m-');
-    loglog(n_struc.f, abs(a_0(:,1)),'b-');
+    loglog(n_struc.f, abs(n_struc.a(:,1)),'k-'); %Plots data
+    loglog(n_struc.f, abs(n_struc.a_fit(:,1)),'r-'); %Plots model
+    loglog(n_struc.f, snr_confidence * abs(n_struc.a_fit(:,1)),'m-'); %Plots model times confidence factor
+    loglog(n_struc.f, abs(a_0(:,1)),'b-'); %Plots simpler model
     set(gca,'YScale','log','XScale','log');
 end
 

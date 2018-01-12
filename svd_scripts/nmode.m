@@ -42,7 +42,6 @@ Nc = 20;
 % Nc = 40;
 disp(['alias number is Nc = ',num2str(Nc)]);
 
-
 for i=1:Nitem   X(i).Nc = Nc; end;
 Z   = loopf(X,tslice,flow,fhigh,nsimul);
 Z.t = tslice;
