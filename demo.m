@@ -16,7 +16,7 @@ for i = 1:3
 end
 
 A1 = 5;
-f1 = 50e+3;
+f1 = 200e+3; %50e+3;
 n1 = 10;
 A2 = 1;
 f2 = 100e+3;
@@ -26,10 +26,9 @@ f3 = 70e+3;
 n3 = 5;
 
 for i = 1:3
-    %xmd.omt(i).signal(:,2) = A1 * sawtooth(xmd.omt(i).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(i).phi);
-    xmd.omt(i).signal(:,2) = 0;%A1 * cos(xmd.omt(i).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(i).phi )  
-    xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(i).phi );
-    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(xmd.omt(i).signal(:,1).^2 * 2* pi *f3 + n3 * xmd.omt(i).phi );
+    xmd.omt(i).signal(:,2) = A1 * cos(xmd.omt(i).signal(:,1) .^ 2 * 2* pi *f1 + n1 * xmd.omt(i).phi )  
+    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1) * 2* pi *f2 + n2 * xmd.omt(i).phi );
+    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(xmd.omt(i).signal(:,1) * 2* pi *f3 + n3 * xmd.omt(i).phi );
 end
 
 % add pink noise taken from
@@ -41,7 +40,7 @@ A = [1.0 -2.494956002   2.017265875  -0.522189400];
 disp(max(abs(roots(A))));
 nT60 = round(log(1000)/(1-max(abs(roots(A))))); % T60 est.
 
-beta = 0.0;
+beta = 0.1;
 for i=1:3
     v = randn(1,Nx+nT60); % Gaussian white noise: N(0,1)
     x = filter(B,A,v);    % Apply 1/F roll-off to PSD

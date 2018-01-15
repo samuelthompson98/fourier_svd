@@ -87,7 +87,10 @@ if (length(nfft)==1) | use_chirp
 
     if ~use_chirp     % USE FFT
         % now fft y which does the columns
+        %disp("Y")
+        %disp(y(:, 1))
         y = fft(y,nfft);
+        %disp(["Y", abs(y(102, :))])
         if ~any(any(imag(x)))    % x purely real
             if rem(nfft,2),    % nfft odd
                 select = [1:(nfft+1)/2];
