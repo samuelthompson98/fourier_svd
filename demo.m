@@ -15,20 +15,23 @@ for i = 1:3
     xmd.omt(i).signal(:,1) = 0:dt:tmax;
 end
 
+%Linearly increasing frequency
 A1 = 5;
-f1 = 200e+3; %50e+3;
-n1 = 10;
-A2 = 1;
-f2 = 100e+3;
-n2 = -10;
-A3 = 3;
-f3 = 70e+3;
+f1 = 12.5e+4;
+n1 = 15;
+%Constant frequency
+A2 = 5;
+f2 = 5e+4;
+n2 = -5;
+%Linearly decreasing frequency
+A3 = 5;
+f3 = 10e+4;
 n3 = 5;
 
 for i = 1:3
     xmd.omt(i).signal(:,2) = A1 * cos(xmd.omt(i).signal(:,1) .^ 2 * 2* pi *f1 + n1 * xmd.omt(i).phi )  
-    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1) * 2* pi *f2 + n2 * xmd.omt(i).phi );
-    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(xmd.omt(i).signal(:,1) * 2* pi *f3 + n3 * xmd.omt(i).phi );
+    xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1) * 2* pi *f2 + n2 * xmd.omt(i).phi );
+    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(f3 * (xmd.omt(i).signal(:,1) - xmd.omt(i).signal(:,1) .^ 2) * 2* pi + n3 * xmd.omt(i).phi );
 end
 
 % add pink noise taken from
@@ -63,7 +66,7 @@ fnorm = 1e+3
 %This function gives an error - had to change some content
 render_example(XMD.omt(1), tnorm, fnorm) %Figure 1
 
-it = min(find(XMD.omt(1).t >= 0.165))
+it = min(find(XMD.omt(1).t >= 0.25)) %0.165
 figure
 size(XMD.omt(1).f)
 size(abs(XMD.omt(1).F(:,it)))
@@ -72,7 +75,7 @@ semilogy(XMD.omt(1).f, abs(XMD.omt(1).F(:,it))) %Figure 2
 toff   = min(xmd.omt(1).signal(:,1));
 
 % M=1 mode
-[Z1]    = nmode(XMD.omt,0.165,1,500,100e+3)
+[Z1]    = nmode(XMD.omt,0.2,1,500,100e+3) %0.165
 Z1.shot = 9429
 [ Z1_noise ]  = fit_mag_power3( Z1) %Figure 3
 pltn_M1data(Z1, Z1_noise); %Figure 4
@@ -86,12 +89,22 @@ Z2.shot = 9429
 
 pltn_M2data(Z2, Z2_noise); %Figure 6
 
-[Z21]    = nmode(XMD.omt,0.25,2,500,100e+3)
+[Z21]    = nmode(XMD.omt,0.2,2,500,100e+3)
 Z21      = nmode_filter(Z21);
 Z21.shot = 9429
 [ Z21_noise ]  = fit_mag_power3( Z21) %Figure 7
 
 pltn_M2data(Z21, Z21_noise); %Figure 8
+
+%ts = [0.11; 0.15; 0.18; 0.2; 0.22; 0.25; 0.29]
+
+%for i = 1:size(ts)
+%    [Z2]    = nmode(XMD.omt,ts(i),2,500,100e+3)
+%    Z2      = nmode_filter(Z2);
+%    Z2.shot = 9429
+%    [ Z2_noise ]  = fit_mag_power3( Z2) %Figure 7
+%    pltn_M2data(Z2, Z2_noise); %Figure 8
+%end
 
 save struc_XMD.mat XMD
 

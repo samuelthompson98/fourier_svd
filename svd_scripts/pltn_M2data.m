@@ -260,6 +260,11 @@ amp_min = 1e-15;
 df = X.f(2) - X.f(1);
 
 nmap = jet(2*Nc+1);
+colormap(nmap);
+
+hb = colorbar('NorthOutside');
+set(hb,'XTick',[0.01 0.5 0.99]); pause(0);
+set(hb,'XTickLabel',{num2str(-Nc),'n=0',num2str(Nc)})
 
 for n=-Nc:Nc
   if l(n+Nc+1)-1>0
@@ -278,10 +283,6 @@ for n=-Nc:Nc
     % end
   end;
 end;
-
-hb = colorbar('NorthOutside');
-set(hb,'XTick',[0.01 0.5 0.99]); pause(0);
-set(hb,'XTickLabel',{num2str(-Nc),'n=0',num2str(Nc)})
 
 % amin = 1; amax = 1e-15;
 % for i=1:NM

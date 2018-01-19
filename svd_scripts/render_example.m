@@ -2,23 +2,11 @@ function render_example(X,tnorm, fnorm)
 
 global dt df
 
-t   = X.t;%/tnorm;
-fl  = X.f;%/fnorm;
+t   = X.t/tnorm;
+fl  = X.f/fnorm;
 bpl = X.F;
-df  = X.df;%/fnorm;
-dt  = X.dt;%/tnorm;
-
-%disp(1e6 * abs(bpl(290:end, 1000)))
-%[1 1] + [1 1 1]
-offset = 100;
-for i = 1:size(t)
-    t(i)
-    abs(bpl(offset:200, i))'
-    index = find(max(bpl(offset:end, i))) + offset - 1
-    fl(index)
-    fl(1:200) %fl(index + offset - 1)
-end
-[1 1] + [1 1 1]
+df  = X.df/fnorm;
+dt  = X.dt/tnorm;
 
 % render spectrogram
 set(0,'DefaultFigureVisible','on'); 
