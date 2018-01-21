@@ -74,37 +74,41 @@ semilogy(XMD.omt(1).f, abs(XMD.omt(1).F(:,it))) %Figure 2
 
 toff   = min(xmd.omt(1).signal(:,1));
 
+get_frequency = @(t) 2 * f1 * t;
+times = 0:0.05:0.29
+plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency, A1, n1);
+
 % M=1 mode
-[Z1]    = nmode(XMD.omt,0.2,1,500,100e+3) %0.165
-Z1.shot = 9429
-[ Z1_noise ]  = fit_mag_power3( Z1) %Figure 3
-pltn_M1data(Z1, Z1_noise); %Figure 4
+%[Z1]    = nmode(XMD.omt,0.2,1,500,100e+3) %0.165
+%Z1.shot = 9429
+%[ Z1_noise ]  = fit_mag_power3( Z1) %Figure 3
+%pltn_M1data(Z1, Z1_noise); %Figure 4
 
 % M=2 mode
-[Z2]    = nmode(XMD.omt,0.165,2,500,100e+3)
-Z2      = nmode_filter(Z2);
+%[Z2]    = nmode(XMD.omt,0.15,2,500,100e+3)
+%Z2      = nmode_filter(Z2);
 
-Z2.shot = 9429
-[ Z2_noise ]  = fit_mag_power3( Z2) %Figure 5
+%Z2.shot = 9429
+%[ Z2_noise ]  = fit_mag_power3( Z2) %Figure 5
 
-pltn_M2data(Z2, Z2_noise); %Figure 6
+%pltn_M2data(Z2, Z2_noise); %Figure 6
 
-[Z21]    = nmode(XMD.omt,0.2,2,500,100e+3)
-Z21      = nmode_filter(Z21);
-Z21.shot = 9429
-[ Z21_noise ]  = fit_mag_power3( Z21) %Figure 7
+%[Z21]    = nmode(XMD.omt,0.25,2,500,100e+3)
+%Z21      = nmode_filter(Z21);
+%Z21.shot = 9429
+%[ Z21_noise ]  = fit_mag_power3( Z21) %Figure 7
 
-pltn_M2data(Z21, Z21_noise); %Figure 8
+%pltn_M2data(Z21, Z21_noise); %Figure 8
 
 %ts = [0.11; 0.15; 0.18; 0.2; 0.22; 0.25; 0.29]
 
-%for i = 1:size(ts)
-%    [Z2]    = nmode(XMD.omt,ts(i),2,500,100e+3)
-%    Z2      = nmode_filter(Z2);
-%    Z2.shot = 9429
-%    [ Z2_noise ]  = fit_mag_power3( Z2) %Figure 7
-%    pltn_M2data(Z2, Z2_noise); %Figure 8
-%end
+for i = 1:size(times')
+    [Z2]    = nmode(XMD.omt,times(i),2,500,100e+3)
+    Z2      = nmode_filter(Z2);
+    Z2.shot = 9429
+    [ Z2_noise ]  = fit_mag_power3( Z2)
+    pltn_M2data(Z2, Z2_noise);
+end
 
 save struc_XMD.mat XMD
 
