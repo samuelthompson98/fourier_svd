@@ -16,7 +16,7 @@ for i = 1:3
 end
 
 %Linearly increasing frequency
-A1 = 0;%5;
+A1 = 5;
 f1 = 12.5e+4;
 n1 = 15;
 %Constant frequency
@@ -43,7 +43,7 @@ A = [1.0 -2.494956002   2.017265875  -0.522189400];
 disp(max(abs(roots(A))));
 nT60 = round(log(1000)/(1-max(abs(roots(A))))); % T60 est.
 
-beta = 0.0;
+beta = 0.1;
 for i=1:3
     v = randn(1,Nx+nT60); % Gaussian white noise: N(0,1)
     x = filter(B,A,v);    % Apply 1/F roll-off to PSD
@@ -75,7 +75,8 @@ semilogy(XMD.omt(1).f, abs(XMD.omt(1).F(:,it))) %Figure 2
 toff   = min(xmd.omt(1).signal(:,1));
 
 get_frequency = @(t) 2 * f1 * t;
-times = 0.0:0.01:0.29
+get_frequency2 = @(t) f3 * (t - t .^ 2)
+times = 0.0:0.05:0.29
 plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency, A1, n1);
 
 %{
@@ -104,7 +105,7 @@ pltn_M2data(Z21, Z21_noise); %Figure 8
 ts = [0.11; 0.15; 0.18; 0.2; 0.22; 0.25; 0.29]
 %}
 
-%%{
+%{
 for i = 1:1%size(times')
     [Z2]    = nmode(XMD.omt,times(i),2,500,100e+3)
     1e5 * max(abs(Z2.a(:, 1)))
@@ -113,7 +114,7 @@ for i = 1:1%size(times')
     [ Z2_noise ]  = fit_mag_power3( Z2)
     pltn_M2data(Z2, Z2_noise);
 end
-%%}
+%}
 
 save struc_XMD.mat XMD
 
