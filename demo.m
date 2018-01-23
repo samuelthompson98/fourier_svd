@@ -17,21 +17,21 @@ end
 
 %Linearly increasing frequency
 A1 = 5;
-f1 = 12.5e+4;
+f1 = 15e+4;
 n1 = 15;
 %Constant frequency
 A2 = 5;
-f2 = 5e+4;
+f2 = 6e+4;
 n2 = -5;
 %Linearly decreasing frequency
 A3 = 5;
 f3 = 10e+4;
-n3 = 5;
+n3 = 8;
 
 for i = 1:3
     xmd.omt(i).signal(:,2) = A1 * cos(xmd.omt(i).signal(:,1) .^ 2 * 2* pi *f1 + n1 * xmd.omt(i).phi )  
     xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A2 * cos(xmd.omt(i).signal(:,1) * 2* pi *f2 + n2 * xmd.omt(i).phi );
-    %xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(f3 * (xmd.omt(i).signal(:,1) - xmd.omt(i).signal(:,1) .^ 2) * 2* pi + n3 * xmd.omt(i).phi );
+    xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A3 * cos(f3 * (xmd.omt(i).signal(:,1) - xmd.omt(i).signal(:,1) .^ 2) * 2* pi + n3 * xmd.omt(i).phi );
 end
 
 % add pink noise taken from
@@ -43,7 +43,7 @@ A = [1.0 -2.494956002   2.017265875  -0.522189400];
 disp(max(abs(roots(A))));
 nT60 = round(log(1000)/(1-max(abs(roots(A))))); % T60 est.
 
-beta = 0.1;
+beta = 0.01;
 for i=1:3
     v = randn(1,Nx+nT60); % Gaussian white noise: N(0,1)
     x = filter(B,A,v);    % Apply 1/F roll-off to PSD
@@ -75,8 +75,9 @@ semilogy(XMD.omt(1).f, abs(XMD.omt(1).F(:,it))) %Figure 2
 toff   = min(xmd.omt(1).signal(:,1));
 
 get_frequency = @(t) 2 * f1 * t;
-get_frequency2 = @(t) f3 * (t - t .^ 2)
-times = 0.0:0.05:0.29
+get_frequency2 = @(t) f3 * (1 - 2 * t)
+times = 0.0:0.02:0.29
+plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency2, A3, n3);
 plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency, A1, n1);
 
 %{
