@@ -191,8 +191,8 @@ X.Fda(i_erange,2) = tol;
 
 % plot interpolated cdf
 hr  = semilogy(X.f/fnorm, X.FdF,residue); 
-ha1 = semilogy(X.f/fnorm, X.Fda(:,1),amp1); 
-ha2 = semilogy(X.f/fnorm, X.Fda(:,2),amp2); 
+ha1 = semilogy(X.f/fnorm, X.Fda(:,1), amp1); 
+ha2 = semilogy(X.f/fnorm, X.Fda(:,2), amp2); 
 fmin = min(X.f) + 2 * filt.fsigma;
 fmax = max(X.f) - 2 * filt.fsigma;
 FdFmin = 0.5 * 10^(floor(log10(min(abs(X.FdF))))) %added absolute value;
