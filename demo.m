@@ -78,8 +78,8 @@ get_frequency1 = @(t) 2 * f1 * t;
 get_frequency2 = @(t) f2 * ones(size(t))
 get_frequency3 = @(t) f3 * (1 - 2 * t)
 times = 0.0:0.05:0.29
-plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency1, A1, n1);
-plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency2, A2, n2);
+plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency1, A1, n1, 2);
+%plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency2, A2, n2, 2);
 %plot_amplitude_and_mode_number_relative_differences(times', XMD.omt, get_frequency3, A3, n3);
 
 %{

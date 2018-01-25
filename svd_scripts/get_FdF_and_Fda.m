@@ -1,5 +1,6 @@
-function [mode_object] = get_FdF_and_Fda(old_mode_object)
-    mode_object = old_mode_object;
+function [mode_object] = get_FdF_and_Fda(spectrogram, time, num_modes)
+    [mode_object] = nmode(spectrogram, time, num_modes, 500, 100e+3);
+    mode_object = nmode_filter(mode_object);
     tolerance = 1e-5;
 
     Nhr = 1e+4; 
