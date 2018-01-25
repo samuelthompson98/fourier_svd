@@ -6,20 +6,6 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     
     frequencies = get_frequency(times);
     
-    %Setup for plotting of uncertainties
-    Nhr = 1e+4; 
-    dr  = 1/(Nhr-1);
-    load n2f_gauss.mat pdf2_norm pdf1_norm
-    pdf1_norm = pdf_poly(pdf1_norm);
-    pdf2_norm = pdf_poly(pdf2_norm);
-    pdf2_norm.hrbin = 0 : dr : 1;
-    pdf2_norm.hFr     = interp1(pdf2_norm.rbin, pdf1_norm.Fr, pdf2_norm.hrbin,'spline','extrap');
-    
-    Nha = 1e+4;
-    da  = (max(pdf2_norm.abin) - min(pdf2_norm.abin))/(Nha-1);
-    pdf2_norm.habin   = min(pdf2_norm.abin) : da : max(pdf2_norm.abin);
-    pdf2_norm.hFa     = interp1(pdf2_norm.abin, pdf2_norm.Fa, pdf2_norm.habin,'spline');
-    
     residue.MarkerFaceColor ='k';
     residue.MarkerSize      = 1;
     residue.Marker          ='none';
@@ -38,23 +24,11 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     amp2.LineWidth       = 1.5;
     
     fnorm = 1e+3;
-    tolerance = 1e-5;
     
     for i = 1:size(times)
         [mode_object] = nmode(spectrogram, times(i), 2, 500, 100e+3); %Adjust these parameters maybe
         mode_object = nmode_filter(mode_object);
-        load ../Bnoise_rms.mat Bnoise
-        mode_object.a_rms = interp1(Bnoise.f, Bnoise.a_rms, mode_object.f, 'linear','extrap');
-        
-        Nf = length(mode_object.f);
-        mode_object.FdF(1:Nf) = interp1(pdf2_norm.rbin, pdf2_norm.Fr, abs(mode_object.dF(1:Nf)),'spline','extrap');
-        mode_object.Fda(1:Nf,1) = 1 - interp1(pdf2_norm.habin, pdf2_norm.hFa, abs(mode_object.a(1:Nf,1))./mode_object.a_rms ,'v5cubic',1e-5);
-        mode_object.Fda(1:Nf,2) = 1 - interp1(pdf2_norm.habin, pdf2_norm.hFa, abs(mode_object.a(1:Nf,2))./mode_object.a_rms ,'v5cubic',1e-5);
-
-        i_erange = find((mode_object.Fda(:,1) < tolerance)|isnan(mode_object.Fda(:,1)));
-        mode_object.Fda(i_erange,1) = tolerance;
-        i_erange = find((mode_object.Fda(:,2) < tolerance)|isnan(mode_object.Fda(:,2)));
-        mode_object.Fda(i_erange,2) = tolerance;
+        mode_object = get_FdF_and_Fda(mode_object);
         
         fig3 = figure;
         hr  = semilogy(mode_object.f / fnorm, mode_object.FdF, residue);
@@ -81,17 +55,14 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     relative_amplitude_differences = fitted_amplitude / correct_amplitude - 1;
     relative_n_differences = fitted_n / correct_n - 1;
     
-    %%{
     fig1 = figure;
     plot(times, relative_amplitude_differences)
     title("Relative amplitude differences")
     xlabel("Time")
     ylabel("Relative amplitude difference")
-    %%}
     fig2 = figure;
     plot(times, relative_n_differences)
     title("Relative n differences")
     xlabel("Time")
     ylabel("Relative n difference")
-    %plot(times, relative_n2_differences)
 return
