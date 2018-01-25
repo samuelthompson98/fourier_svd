@@ -6,23 +6,6 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     
     frequencies = get_frequency(times);
     
-    residue.MarkerFaceColor ='k';
-    residue.MarkerSize      = 1;
-    residue.Marker          ='none';
-    residue.LineStyle       = '-';
-    residue.Color           = 'k';
-    residue.LineWidth       = 1.5;  
-    
-    amp1.Marker          ='none';
-    amp1.LineStyle       = '--';
-    amp1.Color           = 'k';
-    amp1.LineWidth       = 1.5;
-
-    amp2.Marker          ='none';
-    amp2.LineStyle       = ':';
-    amp2.Color           = 'k';
-    amp2.LineWidth       = 1.5;
-    
     fnorm = 1e+3;
     
     for i = 1:size(times)
@@ -30,12 +13,7 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
         mode_object = nmode_filter(mode_object);
         mode_object = get_FdF_and_Fda(mode_object);
         
-        fig3 = figure;
-        hr  = semilogy(mode_object.f / fnorm, mode_object.FdF, residue);
-        hold on;
-        ha1 = semilogy(mode_object.f / fnorm, mode_object.Fda(:, 1), amp1); 
-        ha2 = semilogy(mode_object.f / fnorm, mode_object.Fda(:, 2), amp2); 
-        hold off;
+        plot_confidence_values(mode_object, fnorm)
         %%{
         mode_object.shot = 9429
         [ mode_object_noise ]  = fit_mag_power3( mode_object)
@@ -55,14 +33,5 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     relative_amplitude_differences = fitted_amplitude / correct_amplitude - 1;
     relative_n_differences = fitted_n / correct_n - 1;
     
-    fig1 = figure;
-    plot(times, relative_amplitude_differences)
-    title("Relative amplitude differences")
-    xlabel("Time")
-    ylabel("Relative amplitude difference")
-    fig2 = figure;
-    plot(times, relative_n_differences)
-    title("Relative n differences")
-    xlabel("Time")
-    ylabel("Relative n difference")
+    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
 return
