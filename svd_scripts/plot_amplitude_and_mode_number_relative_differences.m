@@ -17,9 +17,13 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
         pltn_M2data(mode_object, mode_object_noise);
         %}
         
+        %{
         frequency = frequencies(i)
         frequency_differences = abs(frequency - mode_object.f);
         index = find(frequency_differences == min(frequency_differences))
+        %}
+        frequency = frequencies(i);
+        index = find_index_of_closest(mode_object.f, frequency)
        
         for j = 1:num_modes
             fitted_amplitude(i, j) = abs(mode_object.a(index, j)) * amplitude_factor * frequency;

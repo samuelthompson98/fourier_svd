@@ -38,8 +38,9 @@ noise = [0.0; 0.01; 0.1]
 get_frequency = {@(t) 2 * f1 * t; @(t) f2 * ones(size(t))};
 amplitude = [A1; A2];
 n = [n1; n2];
+mode_crossing_time = 0.2;
 for i = 1:size(noise)
-    plot_relative_error_with_noise_amplitude(xmd.omt, noise(i), get_frequency, amplitude, n);
+    plot_relative_error_with_noise_amplitude(xmd.omt, noise(i), get_frequency, amplitude, n, mode_crossing_time);
 end
 
 return

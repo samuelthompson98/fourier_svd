@@ -1,4 +1,4 @@
-function plot_relative_error_with_noise_amplitude(omt, beta, get_frequency, amplitude, mode_number)
+function plot_relative_error_with_noise_amplitude(omt, beta, get_frequency, amplitude, mode_number, mode_crossing_time)
     %WRITE DOCUMENTATION
 
     Nx = size(omt(1).signal,1);
@@ -36,7 +36,7 @@ function plot_relative_error_with_noise_amplitude(omt, beta, get_frequency, ampl
     times = 0.0:0.05:0.29
     for i = 1:size(get_frequency)
         disp("get_frequency has size")
-        size(get_frequency)
+        disp(get_frequency{i})
         plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency{i}, amplitude(i), mode_number(i), 2);
     end
 return
