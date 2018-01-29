@@ -10,12 +10,12 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
         %Adjust these parameters maybe
         [mode_object] = get_FdF_and_Fda(spectrogram, times(i), num_modes);%(mode_object);
         
-        %%{
         plot_confidence_values(mode_object, fnorm)
+        %{
         mode_object.shot = 9429
         [ mode_object_noise ]  = fit_mag_power3( mode_object)
         pltn_M2data(mode_object, mode_object_noise);
-        %%}
+        %}
         
         frequency = frequencies(i)
         frequency_differences = abs(frequency - mode_object.f);

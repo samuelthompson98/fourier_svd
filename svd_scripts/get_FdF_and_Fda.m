@@ -1,4 +1,5 @@
 function [mode_object] = get_FdF_and_Fda(spectrogram, time, num_modes)
+%WRITE DOCUMENTATION
     [mode_object] = nmode(spectrogram, time, num_modes, 500, 100e+3);
     mode_object = nmode_filter(mode_object);
     tolerance = 1e-5;
