@@ -1,4 +1,4 @@
-function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, num_modes)
+function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, mode_num, num_modes, beta)
     %WRITE DOCUMENTATION
     %amplitude_factor = 1.57656e-3;
     amplitude_factor = 0.066
@@ -39,5 +39,5 @@ function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(tim
     
     rmsd_object = struct('amplitude', rmsd_amplitude, 'n', rmsd_n);
     
-    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
+    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences, beta, mode_num);
 return

@@ -35,7 +35,7 @@ for i = 1:3
 end
 
 disp("noise")
-noise = 10 .^ (-3:0.5:1)';
+noise = 10 .^ (-3:2:1)';
 get_frequency = {@(t) f2 * ones(size(t)); @(t) 2 * f1 * t};
 amplitude = [A2; A1];
 n = [n2; n1];
@@ -68,11 +68,19 @@ disp('a')
 a
 
 for i = 1:size(n)
-    plot_value(noise, FdF(:, i), "Noise amplitude", "$$C_r$$", @loglog, 'latex');
-    plot_value(noise, Fda(:, i), "Noise amplitude", "$$C_{\beta}$$", @loglog, 'latex');
-    plot_value(noise, a(:, i), "Noise amplitude", "$$\alpha_{fitted}$$", @plot, 'latex');
-    plot_value(noise, rmsd_amplitude(:, i), "Noise amplitude", "RMSD $$\frac{\Delta \alpha}{\alpha}$$", @semilogx, 'latex');
-    plot_value(noise, rmsd_n(:, i), "Noise amplitude", "RMSD $$\frac{\Delta n}{n}$$", @semilogx, 'latex');
+    title2a = ' for mode number ';
+    title2b = int2str(i);
+    title2 = strcat({title2a}, {title2b});
+    C_r_title = strcat("$$C_r$$", title2);
+    C_beta_title = strcat("$$C_{\beta}$$", title2);
+    alpha_title = strcat("$$\alpha_{fitted}$$", title2);
+    rmsd_a_title = strcat("RMSD $$\frac{\Delta \alpha}{\alpha}$$", title2);
+    rmsd_n_title = strcat("RMSD $$\frac{\Delta n}{n}$$", title2);
+    plot_value(noise, FdF(:, i), "$$\beta$$", "$$C_r$$", C_r_title, @loglog, 'latex');
+    plot_value(noise, Fda(:, i), "$$\beta$$", "$$C_{\beta}$$", C_beta_title, @loglog, 'latex');
+    plot_value(noise, a(:, i), "$$\beta$$", "$$\alpha_{fitted}$$", alpha_title, @plot, 'latex');
+    plot_value(noise, rmsd_amplitude(:, i), "$$\beta$$", "RMSD $$\frac{\Delta \alpha}{\alpha}$$", rmsd_a_title, @semilogx, 'latex');
+    plot_value(noise, rmsd_n(:, i), "$$\beta$$", "RMSD $$\frac{\Delta n}{n}$$", rmsd_n_title, @semilogx, 'latex');
 end
 
 return

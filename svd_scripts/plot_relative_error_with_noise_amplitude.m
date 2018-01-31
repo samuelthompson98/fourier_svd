@@ -33,7 +33,7 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, bet
     %get_frequencies1 = @(t) 2 * f1 * t;
     %get_frequencies2 = @(t) f2 * ones(size(t))
     %get_frequencies3 = @(t) f3 * (1 - 2 * t)
-    times = 0.0:0.05:0.29
+    times = 0.0:0.1:0.29
     
     [mode_object] = get_FdF_and_Fda(spectrogram, mode_crossing_time, num_modes);
     fnorm = 1e+3;
@@ -46,7 +46,7 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, bet
     
     for i = 1:size(get_frequencies)
         get_frequency = get_frequencies{i};
-        [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency, amplitude(i), mode_number(i), 2);
+        [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency, amplitude(i), mode_number(i), i, num_modes, beta);
         frequency = get_frequency(mode_crossing_time);
         index = find_index_of_closest(mode_object.f, frequency)
         FdF(i) = abs(mode_object.FdF(index));
