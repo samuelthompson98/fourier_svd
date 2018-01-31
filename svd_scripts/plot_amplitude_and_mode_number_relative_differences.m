@@ -39,5 +39,5 @@ function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(tim
     
     rmsd_object = struct('amplitude', rmsd_amplitude, 'n', rmsd_n);
     
-    %plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
+    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
 return

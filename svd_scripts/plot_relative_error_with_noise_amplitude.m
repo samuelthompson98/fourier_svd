@@ -47,13 +47,13 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, bet
     for i = 1:size(get_frequencies)
         get_frequency = get_frequencies{i};
         [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency, amplitude(i), mode_number(i), 2);
-        frequency = get_frequency(mode_crossing_time)
+        frequency = get_frequency(mode_crossing_time);
         index = find_index_of_closest(mode_object.f, frequency)
         FdF(i) = abs(mode_object.FdF(index));
         Fda(i) = abs(mode_object.Fda(index, i));
         a(i) = abs(mode_object.a(index, i));
-        rmsd_amplitude(i, :) = rmsd_object.amplitude;
-        rmsd_n(i, :) = rmsd_object.n
+        rmsd_amplitude(i) = rmsd_object.amplitude(i);
+        rmsd_n(i) = rmsd_object.n(i);
     end
    
     confidence_object = struct('FdF', FdF, 'Fda', Fda, 'a', a, 'rmsd_amplitude', rmsd_amplitude, 'rmsd_n', rmsd_n);
