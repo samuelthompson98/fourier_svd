@@ -1,4 +1,4 @@
-function plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, num_modes)
+function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, num_modes)
     %WRITE DOCUMENTATION
     %amplitude_factor = 1.57656e-3;
     amplitude_factor = 0.066
@@ -8,10 +8,10 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     
     for i = 1:size(times)
         %Adjust these parameters maybe
-        [mode_object] = get_FdF_and_Fda(spectrogram, times(i), num_modes);%(mode_object);
+        [mode_object] = get_FdF_and_Fda(spectrogram, times(i), num_modes);
         
-        plot_confidence_values(mode_object, fnorm)
         %{
+        plot_confidence_values(mode_object, fnorm)
         mode_object.shot = 9429
         [ mode_object_noise ]  = fit_mag_power3( mode_object)
         pltn_M2data(mode_object, mode_object_noise);
@@ -34,5 +34,10 @@ function plot_amplitude_and_mode_number_relative_differences(times, spectrogram,
     relative_amplitude_differences = fitted_amplitude / correct_amplitude - 1;
     relative_n_differences = fitted_n / correct_n - 1;
     
-    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
+    rmsd_amplitude = sqrt(mean(relative_amplitude_differences .^ 2))
+    rmsd_n = sqrt(mean(relative_n_differences .^ 2))
+    
+    rmsd_object = struct('amplitude', rmsd_amplitude, 'n', rmsd_n);
+    
+    %plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences);
 return

@@ -1,4 +1,4 @@
-function plot_relative_error_with_noise_amplitude(omt, beta, get_frequency, amplitude, mode_number, mode_crossing_time)
+function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, beta, get_frequencies, amplitude, mode_number, num_modes, mode_crossing_time)
     %WRITE DOCUMENTATION
 
     Nx = size(omt(1).signal,1);
@@ -30,13 +30,31 @@ function plot_relative_error_with_noise_amplitude(omt, beta, get_frequency, ampl
 
     toff   = min(omt(1).signal(:,1));
     
-    %get_frequency1 = @(t) 2 * f1 * t;
-    %get_frequency2 = @(t) f2 * ones(size(t))
-    %get_frequency3 = @(t) f3 * (1 - 2 * t)
+    %get_frequencies1 = @(t) 2 * f1 * t;
+    %get_frequencies2 = @(t) f2 * ones(size(t))
+    %get_frequencies3 = @(t) f3 * (1 - 2 * t)
     times = 0.0:0.05:0.29
-    for i = 1:size(get_frequency)
-        disp("get_frequency has size")
-        disp(get_frequency{i})
-        plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency{i}, amplitude(i), mode_number(i), 2);
+    
+    [mode_object] = get_FdF_and_Fda(spectrogram, mode_crossing_time, num_modes);
+    fnorm = 1e+3;
+    %plot_confidence_values(mode_object, fnorm)
+    %{
+    mode_object.shot = 9429
+    [ mode_object_noise ]  = fit_mag_power3( mode_object)
+    pltn_M2data(mode_object, mode_object_noise);
+    %}
+    
+    for i = 1:size(get_frequencies)
+        get_frequency = get_frequencies{i};
+        [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency, amplitude(i), mode_number(i), 2);
+        frequency = get_frequency(mode_crossing_time)
+        index = find_index_of_closest(mode_object.f, frequency)
+        FdF(i) = abs(mode_object.FdF(index));
+        Fda(i) = abs(mode_object.Fda(index, i));
+        a(i) = abs(mode_object.a(index, i));
+        rmsd_amplitude(i, :) = rmsd_object.amplitude;
+        rmsd_n(i, :) = rmsd_object.n
     end
+   
+    confidence_object = struct('FdF', FdF, 'Fda', Fda, 'a', a, 'rmsd_amplitude', rmsd_amplitude, 'rmsd_n', rmsd_n);
 return

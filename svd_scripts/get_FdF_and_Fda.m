@@ -22,8 +22,9 @@ function [mode_object] = get_FdF_and_Fda(spectrogram, time, num_modes)
         
     Nf = length(mode_object.f);
     mode_object.FdF(1:Nf) = interp1(pdf2_norm.rbin, pdf2_norm.Fr, abs(mode_object.dF(1:Nf)),'spline','extrap');
-    mode_object.Fda(1:Nf,1) = 1 - interp1(pdf2_norm.habin, pdf2_norm.hFa, abs(mode_object.a(1:Nf,1))./mode_object.a_rms ,'v5cubic',1e-5);
-    mode_object.Fda(1:Nf,2) = 1 - interp1(pdf2_norm.habin, pdf2_norm.hFa, abs(mode_object.a(1:Nf,2))./mode_object.a_rms ,'v5cubic',1e-5);
+    for i = 1:num_modes
+        mode_object.Fda(1:Nf,i) = 1 - interp1(pdf2_norm.habin, pdf2_norm.hFa, abs(mode_object.a(1:Nf,i))./mode_object.a_rms ,'v5cubic',1e-5);
+    end
 
     i_erange = find((mode_object.Fda(:,1) < tolerance)|isnan(mode_object.Fda(:,1)));
     mode_object.Fda(i_erange,1) = tolerance;
