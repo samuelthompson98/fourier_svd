@@ -2,6 +2,7 @@ function [rmsd_object] = ...
     plot_amplitude_and_mode_number_relative_differences(times, ...
     spectrogram, get_frequency, correct_amplitude, correct_n, ...
     mode_num, num_modes, beta, mode_crossing_time)
+
     %WRITE DOCUMENTATION
     %amplitude_factor = 1.57656e-3;
     amplitude_factor = 0.066;
@@ -9,6 +10,9 @@ function [rmsd_object] = ...
     
     time_index = find_index_of_closest(times, mode_crossing_time);
     frequencies = get_frequency(times);
+    
+    fitted_amplitude = zeros(size(times, 1), num_modes);
+    fitted_n = zeros(size(times, 1), num_modes);
     
     for i = 1:size(times)
         %Adjust these parameters maybe

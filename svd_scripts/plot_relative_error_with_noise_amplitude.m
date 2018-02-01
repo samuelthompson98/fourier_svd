@@ -35,7 +35,7 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(...
     %get_frequencies1 = @(t) 2 * f1 * t;
     %get_frequencies2 = @(t) f2 * ones(size(t))
     %get_frequencies3 = @(t) f3 * (1 - 2 * t)
-    times = 0.0:0.1:0.29;
+    times = 0.0:0.02:0.29;
     
     [mode_object] = get_FdF_and_Fda(spectrogram, mode_crossing_time, ...
         num_modes);
@@ -46,6 +46,13 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(...
     [ mode_object_noise ]  = fit_mag_power3( mode_object)
     pltn_M2data(mode_object, mode_object_noise);
     %}
+    
+    num_freqs = size(get_frequencies);
+    FdF = zeros(num_freqs);
+    Fda = zeros(num_freqs);
+    a = zeros(num_freqs);
+    rmsd_amplitude = zeros(num_freqs);
+    rmsd_n = zeros(num_freqs);
     
     for i = 1:size(get_frequencies)
         get_frequency = get_frequencies{i};
