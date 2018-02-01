@@ -1,4 +1,6 @@
-function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, beta, get_frequencies, amplitude, mode_number, num_modes, mode_crossing_time)
+function [confidence_object] = plot_relative_error_with_noise_amplitude(...
+    omt, beta, get_frequencies, amplitude, mode_number, num_modes, ...
+    mode_crossing_time)
     %WRITE DOCUMENTATION
 
     Nx = size(omt(1).signal,1);
@@ -35,7 +37,8 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, bet
     %get_frequencies3 = @(t) f3 * (1 - 2 * t)
     times = 0.0:0.1:0.29;
     
-    [mode_object] = get_FdF_and_Fda(spectrogram, mode_crossing_time, num_modes);
+    [mode_object] = get_FdF_and_Fda(spectrogram, mode_crossing_time, ...
+        num_modes);
     fnorm = 1e+3;
     %plot_confidence_values(mode_object, fnorm)
     %{
@@ -46,15 +49,19 @@ function [confidence_object] = plot_relative_error_with_noise_amplitude(omt, bet
     
     for i = 1:size(get_frequencies)
         get_frequency = get_frequencies{i};
-        [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times', spectrogram, get_frequency, amplitude(i), mode_number(i), i, num_modes, beta, mode_crossing_time);
+        [rmsd_object] = ...
+            plot_amplitude_and_mode_number_relative_differences(...
+            times', spectrogram, get_frequency, amplitude(i), ...
+            mode_number(i), i, num_modes, beta, mode_crossing_time);
         frequency = get_frequency(mode_crossing_time);
-        index = find_index_of_closest(mode_object.f, frequency)
+        index = find_index_of_closest(mode_object.f, frequency);
         FdF(i) = abs(mode_object.FdF(index));
         Fda(i) = abs(mode_object.Fda(index, i));
         a(i) = abs(mode_object.a(index, i));
-        rmsd_amplitude(i) = rmsd_object.amplitude(i);
-        rmsd_n(i) = rmsd_object.n(i);
+        rmsd_amplitude(i) = rmsd_object.amplitude;
+        rmsd_n(i) = rmsd_object.n;
     end
    
-    confidence_object = struct('FdF', FdF, 'Fda', Fda, 'a', a, 'rmsd_amplitude', rmsd_amplitude, 'rmsd_n', rmsd_n);
+    confidence_object = struct('FdF', FdF, 'Fda', Fda, 'a', a, ...
+        'rmsd_amplitude', rmsd_amplitude, 'rmsd_n', rmsd_n);
 return

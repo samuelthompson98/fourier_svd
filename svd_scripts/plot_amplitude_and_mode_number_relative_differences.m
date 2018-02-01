@@ -1,9 +1,13 @@
-function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, mode_num, num_modes, beta, mode_crossing_time)
+function [rmsd_object] = ...
+    plot_amplitude_and_mode_number_relative_differences(times, ...
+    spectrogram, get_frequency, correct_amplitude, correct_n, ...
+    mode_num, num_modes, beta, mode_crossing_time)
     %WRITE DOCUMENTATION
     %amplitude_factor = 1.57656e-3;
-    amplitude_factor = 0.066
+    amplitude_factor = 0.066;
     fnorm = 1e+3;
     
+    time_index = find_index_of_closest(times, mode_crossing_time);
     frequencies = get_frequency(times);
     
     for i = 1:size(times)
@@ -20,24 +24,40 @@ function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(tim
         %{
         frequency = frequencies(i)
         frequency_differences = abs(frequency - mode_object.f);
-        index = find(frequency_differences == min(frequency_differences))
+        frequency_index = find(frequency_differences == min(frequency_differences))
         %}
         frequency = frequencies(i);
-        index = find_index_of_closest(mode_object.f, frequency)
+        frequency_index = find_index_of_closest(mode_object.f, frequency);
        
         for j = 1:num_modes
-            fitted_amplitude(i, j) = abs(mode_object.a(index, j)) * amplitude_factor * frequency;
-            fitted_n(i, j) = mode_object.n(max(index, 1), j);%mean(mode_object.n(max((index - 1):(index + 1), 1), j))
+            fitted_amplitude(i, j) = ...
+                abs(mode_object.a(frequency_index, j)) ...
+                * amplitude_factor * frequency;
+            fitted_n(i, j) = mode_object.n(max(frequency_index, 1), j);
+            %mean(mode_object.n(max((frequency_index - 1):(frequency_index + 1), 1), j))
         end
     end
     
-    relative_amplitude_differences = fitted_amplitude / correct_amplitude - 1;
+    relative_amplitude_differences = ...
+        fitted_amplitude / correct_amplitude - 1;
     relative_n_differences = fitted_n / correct_n - 1;
     
-    rmsd_amplitude = sqrt(mean(relative_amplitude_differences .^ 2))
-    rmsd_n = sqrt(mean(relative_n_differences .^ 2))
+    %Will break for more than 2 modes, unless all modes cross at once
+    new_relative_amplitude_differences = ...
+        relative_amplitude_differences(:, 1);
+    new_relative_amplitude_differences(time_index) = ...
+        relative_amplitude_differences(time_index, mode_num);
+    new_relative_n_differences = ...
+        relative_n_differences(:, 1);
+    new_relative_n_differences(time_index) = ...
+        relative_n_differences(time_index, mode_num);
+    
+    rmsd_amplitude = sqrt(mean(new_relative_amplitude_differences .^ 2))
+    rmsd_n = sqrt(mean(new_relative_n_differences .^ 2))
     
     rmsd_object = struct('amplitude', rmsd_amplitude, 'n', rmsd_n);
     
-    plot_amplitude_and_mode_number_relative_differences_inner(times, relative_amplitude_differences, relative_n_differences, beta, mode_num);
+    plot_amplitude_and_mode_number_relative_differences_inner(times, ...
+        relative_amplitude_differences, relative_n_differences, beta, ...
+        mode_num);
 return
