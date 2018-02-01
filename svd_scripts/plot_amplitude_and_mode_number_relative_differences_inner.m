@@ -6,7 +6,7 @@ function plot_amplitude_and_mode_number_relative_differences_inner(times, relati
     amplitude_title = strcat({amplitude_title1}, {title2}, {title3});
     n_title = strcat({n_title1}, {title2}, {title3});
     plot_value(times, relative_amplitude_differences, "Time", "Relative amplitude difference", amplitude_title, @plot, 'none');
-    legend("Mode 1", "Mode 2", "FontSize", 16);
+    legend("Mode 1", "Mode 2");
     plot_value(times, relative_n_differences, "Time", "Relative n difference", n_title, @plot, 'none');
-    legend("Mode 1", "Mode 2", "FontSize", 16);
+    legend("Mode 1", "Mode 2");
 return

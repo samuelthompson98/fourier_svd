@@ -1,4 +1,4 @@
-function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, mode_num, num_modes, beta)
+function [rmsd_object] = plot_amplitude_and_mode_number_relative_differences(times, spectrogram, get_frequency, correct_amplitude, correct_n, mode_num, num_modes, beta, mode_crossing_time)
     %WRITE DOCUMENTATION
     %amplitude_factor = 1.57656e-3;
     amplitude_factor = 0.066
