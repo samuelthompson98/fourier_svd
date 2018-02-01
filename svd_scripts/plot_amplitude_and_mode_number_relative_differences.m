@@ -3,7 +3,13 @@ function [rmsd_object] = ...
     spectrogram, get_frequency, correct_amplitude, correct_n, ...
     mode_num, num_modes, beta, mode_crossing_time)
 
-    %WRITE DOCUMENTATION
+    %Plots the relative difference between the fitted and correct amplitude
+    %and mode number of a mode with frequency a function of time given by 
+    %"get_frequency" amplitude given by "correct_amplitude" and mode number
+    %given by "correct_n". Returns an object containing the root mean 
+    %square value of the relative differences in amplitude and mode number,
+    %taken across time.
+    
     %amplitude_factor = 1.57656e-3;
     amplitude_factor = 0.066;
     fnorm = 1e+3;

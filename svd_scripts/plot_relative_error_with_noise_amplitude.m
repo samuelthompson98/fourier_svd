@@ -1,7 +1,12 @@
 function [confidence_object] = plot_relative_error_with_noise_amplitude(...
     omt, beta, get_frequencies, amplitude, mode_number, num_modes, ...
     mode_crossing_time)
-    %WRITE DOCUMENTATION
+    %Plots the relative difference between the fitted and actual amplitude 
+    %and mode number, for each mode with frequency given in
+    %get_frequencies. Returns an object containing the confidence
+    %statistics (C_beta and C_r), as well as the fitted amplitude at the
+    %mode crossing time, and the root mean square value of the relative
+    %differences in amplitude and mode number, taken across time.
 
     Nx = size(omt(1).signal,1);
     B = [0.049922035 -0.095993537 0.050612699 -0.004408786];
