@@ -7,35 +7,32 @@ for i = 1:3
     xmd.omt(i).signal(:,1) = 0:dt:tmax;
 end
 
-n = [15; -5];
-A = [5; 1];
-%f1 = 15e+4; %Linearly increasing frequency
-f2 = 6e+4; %Constant frequency
-
 for i = 1:3
-    %xmd.omt(i).signal(:,2) = A(1) * cos(xmd.omt(i).signal(:,1) .^ 2 ...
-    %    * 2 * pi * f1 + n(1) * xmd.omt(i).phi ); 
     xmd.omt(i).signal(:,2) = A(1) * ...
         cos(xmd.omt(i).signal(:,1) * 2 * pi * f2 + n(1) * xmd.omt(i).phi );
     xmd.omt(i).signal(:,2) = xmd.omt(i).signal(:,2) + A(2) * ...
         cos(xmd.omt(i).signal(:,1) * 2 * pi * f2 + n(2) * xmd.omt(i).phi );
 end
 
-noise_amplitude = (0:10:50)';
+noise_amplitude = 10 .^ (-1:0.2:2)';
 get_frequency = @(t) f2;
 mode_crossing_time = tmax / 2;
-num_modes = 2;
-delta_n = zeros(size(noise_amplitude, 1), num_modes);
+n = [15; -5];
+amplitude_ratios = 10 .^ (0:0.2:2)';
+cutoff_amplitude = zeros(size(amplitude_ratios, 1), size(n, 1));
 
-for i = 1:size(noise_amplitude)
-    delta_n(i, :) = get_mode_number_difference(xmd.omt, ...
-        noise_amplitude(i), mode_crossing_time, ...
-        get_frequency, n, num_modes);
+for i = 1:size(amplitude_ratios)
+    cutoff_amplitude(i, :) = get_cutoff_noise_amplitude(xmd.omt, ...
+        noise_amplitude, amplitude_ratios(i), mode_crossing_time, n);
 end
 
 for i = 1:size(n)
-    plot_value(noise_amplitude, delta_n(:, i), "$$\beta$$", ...
-        "$$\Delta n$$", "$$\Delta n$$ vs. $$\beta$$", @plot, 'latex');
+    title1 = "$$\beta_{cutoff}$$ vs. $$\frac{A_1}{A_2}$$ for mode number ";
+    title2 = int2str(i);
+    graph_title = strcat(title1, title2);
+    plot_value(amplitude_ratios, cutoff_amplitude(:, i), ...
+        "$$\frac{A_1}{A_2}$$", "$$\beta_{cutoff}$$", ...
+        graph_title, @semilogx, 'latex');
 end
 
 return
