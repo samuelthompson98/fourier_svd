@@ -1,5 +1,6 @@
-function delta_n = get_mode_number_difference(time_series, ...
-        noise_amplitude, mode_crossing_time, get_frequency, n, num_modes)
+function [delta_n, delta_A] = get_mode_number_difference(time_series, ...
+        noise_amplitude, mode_crossing_time, get_frequency, n, A, ...
+        num_modes)
     %WRITE DOCUMENTATION
     
     Nx = size(time_series(1).signal,1);
@@ -27,4 +28,5 @@ function delta_n = get_mode_number_difference(time_series, ...
     frequency_index = find_index_of_closest(mode_object.f, frequency);
     
     delta_n = (mode_object.n(frequency_index, :))' - n;
+    delta_A = (mode_object.a(frequency_index, :))' - A;
 return
