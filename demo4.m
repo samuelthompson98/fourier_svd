@@ -7,12 +7,12 @@ for i = 1:3
     xmd.omt(i).signal(:,1) = 0:dt:tmax;
 end
 
-noise_amplitude = 30:90:120;
+noise_amplitude = 30:30:120;
 get_frequency = @(t) f2;
 mode_crossing_time = tmax / 2;
-nvals = (-20:40:20)';
+nvals = (-20:20:20)';
 num_modes = 2;
-amplitude_ratios = 10 .^ (0:2:2)';
+amplitude_ratios = 10 .^ (0:1:2)';
 n_cutoff_amplitude = zeros(size(nvals, 1), size(nvals, 1), ...
     size(amplitude_ratios, 1), num_modes);
 A_cutoff_amplitude = zeros(size(nvals, 1), size(nvals, 1), ...
