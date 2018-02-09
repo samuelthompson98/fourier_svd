@@ -10,7 +10,7 @@ for i = 1:num_coils
 end
 
 A1 = 1;
-f1 = 42e+3;
+f1 = 50e+3;
 n1 = 10;
 A2 = 1;
 f2 = 100e+3;
@@ -53,6 +53,8 @@ toff   = min(xmd.omt(1).signal(:,1));
 % M=2 mode
 [Z2]    = nmode(XMD.omt,0.165,2,500,100e+3)
 Z2      = nmode_filter(Z2);
+figure;
+plot(Z2.f, abs(Z2.a(:, 1)));
 
 Z2.shot = 9429
 [ Z2_noise ]  = fit_mag_power3( Z2)
@@ -60,7 +62,7 @@ Z2.shot = 9429
 pltn_M2data(Z2, Z2_noise);
 
 amplitude = max(abs(Z2.a(:, 1)))
-frequency = Z2.f(find(Z2.a(:,1) == amplitude))
+frequency = Z2.f(find(abs(Z2.a(:,1)) == amplitude))
 real_amplitude = get_real_amplitude(amplitude, frequency)
 
 save struc_XMD.mat XMD
