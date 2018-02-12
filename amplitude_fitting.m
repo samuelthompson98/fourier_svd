@@ -19,7 +19,7 @@ model_omega = 1.4005
 amplitude = 5;
 model_c = 16.4089;
 model_omega = 1.40005;
-model_phi = -0.504286
+model_phi = -0.504286;
 model_a = 0.88319;
 model_p = 1.00588;
 model = amplitude * (model_c + model_a * ...
@@ -38,12 +38,14 @@ for i = 1:size(f)
     XMD.omt = spec(xmd.omt, winl, norm);
     [Z1] = nmode(XMD.omt, 0.165, 2, 500, 100e+3);
     Z1 = nmode_filter(Z1);
+    disp("max height")
     max_height(i) = max(abs(Z1.a(:, 1)));
+    max_height(i)
+    disp("model")
+    get_real_amplitude(max_height(i), f(i))
 end
 
 %%{
-disp("Maximum Height!")
-max_height * 1e4
 residuals = (model - max_height) ./ max_height;%/ max_height - 1;
 figure;
 hold on;

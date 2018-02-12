@@ -28,7 +28,10 @@ function [delta_n, delta_A] = get_mode_number_and_amplitude_difference(...
     frequency_index = find_index_of_closest(mode_object.f, frequency);
     
     real_amplitude = get_real_amplitude(...
-        mode_object.n(frequency_index, :), frequency);
+        abs(mode_object.a(frequency_index, :)), frequency)
+    abs(mode_object.a(frequency_index, :))
+    amplitude
+    
     delta_n = (mode_object.n(frequency_index, :))' - n;
-    delta_A = real_amplitude' - amplitude;
+    delta_A = abs((real_amplitude' - amplitude) ./ amplitude);
 return
