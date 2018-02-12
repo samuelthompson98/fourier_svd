@@ -6,7 +6,7 @@ tmax = 0.3;
 num_sensors = 3;
 f = 1e4 * (1.0:0.5:10)';
 max_height = zeros(size(f));
-n1 = 10;
+n1 = 11;
 winl    = 2048;
 norm    = spec_norm(winl);
 

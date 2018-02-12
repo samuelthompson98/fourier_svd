@@ -10,9 +10,10 @@ end
 noise_amplitude = 10 .^ (-3:0.5:2);
 get_frequency = @(t) f2;
 mode_crossing_time = tmax / 2;
+n1 = 11;
 nvals = (-20:40:20)';
 num_modes = 2;
-amplitude_ratios = 10 .^ (0:2:2)';
+amplitude_ratios = 10 .^ (0:0.2:2)';
 n_cutoff_amplitude = zeros(size(nvals, 1), size(nvals, 1), ...
     size(amplitude_ratios, 1), num_modes);
 A_cutoff_amplitude = zeros(size(nvals, 1), size(nvals, 1), ...
