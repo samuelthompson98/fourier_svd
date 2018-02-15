@@ -2,6 +2,8 @@ function cutoff = get_cutoff_noise_amplitude_inner(matches, ...
     correct_trials_required, noise_amplitudes)
     %WRITE DOCUMENTATION
     
+    cutoff_zero_value = 1e-4;
+    
     num_modes = size(matches, 2);
     cutoff = zeros(num_modes, 1);
     for i = 1:num_modes
@@ -11,7 +13,7 @@ function cutoff = get_cutoff_noise_amplitude_inner(matches, ...
         else
             first_faulty_index = min(faulty_indices);
             if first_faulty_index == 1
-                cutoff(i) = 0;
+                cutoff(i) = cutoff_zero_value;
             else
                 cutoff(i) = noise_amplitudes(first_faulty_index - 1);
             end

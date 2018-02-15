@@ -1,3 +1,4 @@
+
 % figure 2
 % Perform SVD decomposition, and return n mode analysis
 
@@ -11,6 +12,7 @@ addpath svd_scripts
 % last item gets popped to top of stack....
 % addpath /home/hol105/MHD_codes/matlab/svd_scripts
 
+
 load struc_xmd.mat
 
 % MJH processing 15/06/07: remove mean
@@ -22,16 +24,17 @@ xmd.omt(1).signal(:,1) = 0:dt:tmax;
 xmd.omt(2).signal(:,1) = 0:dt:tmax;
 xmd.omt(3).signal(:,1) = 0:dt:tmax;
 
-A1 = 1;
-f1 = 42e+3;
+
+A1 = 5;
+f1 = 50e+3;
 n1 = 10;
 A2 = 1;
 f2 = 100e+3;
 n2 = -10;
 
-xmd.omt(1).signal(:,2) = A1 * cos(xmd.omt(1).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(1).phi );%  + A2 * cos(xmd.omt(1).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(1).phi ); 
-xmd.omt(2).signal(:,2) = A1 * cos(xmd.omt(2).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(2).phi );%  + A2 * cos(xmd.omt(2).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(2).phi ); 
-xmd.omt(3).signal(:,2) = A1 * cos(xmd.omt(3).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(3).phi );%  + A2 * cos(xmd.omt(3).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(3).phi ); 
+xmd.omt(1).signal(:,2) = A1 * cos(xmd.omt(1).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(1).phi )  + A2 * cos(xmd.omt(1).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(1).phi ); 
+xmd.omt(2).signal(:,2) = A1 * cos(xmd.omt(2).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(2).phi )  + A2 * cos(xmd.omt(2).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(2).phi ); 
+xmd.omt(3).signal(:,2) = A1 * cos(xmd.omt(3).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(3).phi )  + A2 * cos(xmd.omt(3).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(3).phi ); 
 
 % add noise to signal components
 Nt   = size(xmd.omt(1).signal,1)
@@ -43,13 +46,14 @@ end
 % add pink noise taken from
 % https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html
 
+
 Nx = 2^16;  % number of samples to synthesize
 Nx = Nt;  
 B = [0.049922035 -0.095993537 0.050612699 -0.004408786];
 A = [1 -2.494956002   2.017265875  -0.522189400];
-nT60 = round(log(1000)/(1-max(abs(roots(A))))); % T60 est.
+nT60 = 0;%round(log(1000)/(1-max(abs(roots(A))))) % T60 est.
 
-beta = 0.0;%0.1;
+beta = 0.1;
 for i=1:3
     v = randn(1,Nx+nT60); % Gaussian white noise: N(0,1)
     x = filter(B,A,v);    % Apply 1/F roll-off to PSD
@@ -61,6 +65,7 @@ disp(['Normalization =================================']);
 winl    = 4096
 winl    = 2048
 norm    = spec_norm(winl)
+
 
 disp(['Spectrum ======================================']);
 XMD.omt = spec(xmd.omt, winl, norm);
@@ -79,8 +84,6 @@ toff   = min(xmd.omt(1).signal(:,1));
 
 % M=1 mode
 [Z1]    = nmode(XMD.omt,0.165,1,500,100e+3)
-disp("max height")
-max(1e3 * abs(Z1.a(:, 1)))
 Z1.shot = 9429
 [ Z1_noise ]  = fit_mag_power3( Z1)
 
@@ -107,3 +110,8 @@ pltn_M2data(Z21, Z21_noise);
 save struc_XMD.mat XMD
 
 return
+
+
+
+
+

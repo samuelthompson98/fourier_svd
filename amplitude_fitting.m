@@ -6,7 +6,7 @@ tmax = 0.3;
 num_sensors = 3;
 f = 1e4 * (1.0:0.5:10)';
 max_height = zeros(size(f));
-n1 = 11;
+n1 = 10;
 winl    = 2048;
 norm    = spec_norm(winl);
 
@@ -45,7 +45,26 @@ for i = 1:size(f)
     get_real_amplitude(max_height(i), f(i))
 end
 
-%%{
+fig1 = figure;
+hold on;
+plot2 = plot(f / 1000, max_height);
+plot1 = plot(f / 1000, model);
+xlabel("Frequency (kHz)");%, 'fontsize', 24);
+ylabel("Amplitude");%, 'fontsize', 24);
+set(gca, 'fontsize', 16);
+legend('Calculated Amplitudes', 'Model');
+hold off;
+
+fig2 = figure;
+residuals = (model - max_height) ./ max_height;
+plot3 = plot(f / 1000, residuals);
+xlabel("Frequency (kHz)");%, 'fontsize', 24);
+ylabel("Relative Error");%, 'fontsize', 24);
+set(gca, 'fontsize', 16);
+disp("Max Residual");
+max(abs(residuals))
+
+%{
 residuals = (model - max_height) ./ max_height;%/ max_height - 1;
 figure;
 hold on;
@@ -54,7 +73,7 @@ plot(f, model);
 hold off;
 figure;
 plot(f, residuals);
-%%}
+%}
 
 save struc_XMD.mat XMD
 
