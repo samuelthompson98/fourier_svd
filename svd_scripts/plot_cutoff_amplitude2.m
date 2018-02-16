@@ -17,7 +17,7 @@ function plot_cutoff_amplitude2(nvals, amplitude_ratios, ...
     yvals = amplitude_ratios' .* ones(size(zvals, 1), 1)
         
     figure;
-    surf(xvals, yvals, zvals);
+    heatmap(xvals, yvals, zvals);
     set(gca, 'YScale', 'log');
     set(gca, 'ZScale', 'log');
     title(graph_title, 'Interpreter', 'Latex', 'fontsize', 20);

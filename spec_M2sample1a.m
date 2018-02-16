@@ -32,9 +32,9 @@ A2 = 1;
 f2 = 100e+3;
 n2 = -10;
 
-xmd.omt(1).signal(:,2) = A1 * cos(xmd.omt(1).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(1).phi )  + A2 * cos(xmd.omt(1).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(1).phi ); 
-xmd.omt(2).signal(:,2) = A1 * cos(xmd.omt(2).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(2).phi )  + A2 * cos(xmd.omt(2).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(2).phi ); 
-xmd.omt(3).signal(:,2) = A1 * cos(xmd.omt(3).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(3).phi )  + A2 * cos(xmd.omt(3).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(3).phi ); 
+xmd.omt(1).signal(:,2) = 0;%A1 * cos(xmd.omt(1).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(1).phi )  + A2 * cos(xmd.omt(1).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(1).phi ); 
+xmd.omt(2).signal(:,2) = 0;%A1 * cos(xmd.omt(2).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(2).phi )  + A2 * cos(xmd.omt(2).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(2).phi ); 
+xmd.omt(3).signal(:,2) = 0;%A1 * cos(xmd.omt(3).signal(:,1) * 2* pi *f1 + n1 * xmd.omt(3).phi )  + A2 * cos(xmd.omt(3).signal(:,1).^2 * 2* pi *f2 + n2 * xmd.omt(3).phi ); 
 
 % add noise to signal components
 Nt   = size(xmd.omt(1).signal,1)

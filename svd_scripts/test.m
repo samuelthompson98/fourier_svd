@@ -1,0 +1,1 @@
+combinations = get_combinations(2, 4)
